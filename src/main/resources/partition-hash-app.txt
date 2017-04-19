@@ -1,0 +1,3 @@
+.dttalk=1
+.telos=2
+DEFAULT_NODE=0

@@ -51,6 +51,9 @@ public class PartitionByFileMap extends AbstractPartitionAlgorithm implements Ru
 	 */
 	private static final String DEFAULT_NODE = "DEFAULT_NODE";
 	
+	//定义key的位置,-1表示开头，0表示全部，1表示结尾
+	private int keyIndex;
+	
 	/**
 	 * 默认节点:小于0表示不设置默认节点，大于等于0表示设置默认节点
 	 * 
@@ -63,7 +66,6 @@ public class PartitionByFileMap extends AbstractPartitionAlgorithm implements Ru
 
 	@Override
 	public void init() {
-
 		initialize();
 	}
 
@@ -73,6 +75,10 @@ public class PartitionByFileMap extends AbstractPartitionAlgorithm implements Ru
 	
 	public void setType(int type) {
 		this.type = type;
+	}
+	
+	public void setKeyIndex(int keyIndex){
+		this.keyIndex = keyIndex;
 	}
 
 	public void setDefaultNode(int defaultNode) {
@@ -88,6 +94,21 @@ public class PartitionByFileMap extends AbstractPartitionAlgorithm implements Ru
 			}
 			Integer rst = null;
 			Integer pid = app2Partition.get(value);
+			
+			if (keyIndex == -1){
+				for(Object o:app2Partition.keySet()){
+					if(columnValue.startsWith(o.toString())){
+						pid = app2Partition.get(o);
+					}
+				}
+			}
+			if (keyIndex == 1){
+				for(Object o:app2Partition.keySet()){
+					if(columnValue.endsWith(o.toString())){
+						pid = app2Partition.get(o);
+					}
+				}
+			}
 			if (pid != null) {
 				rst = pid;
 			} else {

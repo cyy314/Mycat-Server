@@ -9,6 +9,14 @@
 	under the License. -->
 <!DOCTYPE mycat:rule SYSTEM "rule.dtd">
 <mycat:rule xmlns:mycat="http://io.mycat/">
+
+	<tableRule name="sharding-by-app">
+		<rule>
+			<columns>DEVICE_ID</columns>
+			<algorithm>hash-app</algorithm>	
+		</rule>
+	</tableRule>
+	
 	<tableRule name="rule1">
 		<rule>
 			<columns>id</columns>
@@ -97,6 +105,13 @@
 	<function name="hash-int"
 		class="io.mycat.route.function.PartitionByFileMap">
 		<property name="mapFile">partition-hash-int.txt</property>
+	</function>
+	<function name="hash-app"
+		class="io.mycat.route.function.PartitionByFileMap">
+		<property name="mapFile">partition-hash-app.txt</property>
+		<property name="type">1</property>
+		<property name="keyIndex">1</property>
+		<property name="defaultNode">0</property>
 	</function>
 	<function name="rang-long"
 		class="io.mycat.route.function.AutoPartitionByLong">
